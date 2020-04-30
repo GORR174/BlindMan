@@ -6,7 +6,7 @@ namespace BlindMan
     {
         public static void Main(string[] args)
         {
-            Application.Run(new GameForm());
+            Application.Run(new GameForm(new GameModel()));
         }
     }
 }
