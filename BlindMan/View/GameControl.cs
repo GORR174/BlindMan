@@ -1,22 +1,16 @@
 ﻿using System.Diagnostics;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace BlindMan
 {
-    public class GameForm : Form
+    public class GameControl : BaseControl
     {
         Images images = new Images();
-        private GameModel gameModel;
-        
-        public GameForm(GameModel gameModel)
+
+        public GameControl(GameModel gameModel) : base(gameModel)
         {
-            this.gameModel = gameModel;
             images.Load();
-            DoubleBuffered = true;
-            Text = GameSettings.GameName;
-            Size = new Size(GameSettings.GameWidth, GameSettings.GameHeight);
-            
+
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             var timer = new Timer();

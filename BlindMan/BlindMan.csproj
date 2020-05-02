@@ -40,15 +40,19 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Enitities\IEntity.cs" />
+        <Compile Include="Domain\GameState.cs" />
+        <Compile Include="Enitities\Entity.cs" />
         <Compile Include="Enitities\Player.cs" />
         <Compile Include="GameSettings.cs" />
-        <Compile Include="Models\GameModel.cs" />
+        <Compile Include="Domain\GameModel.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="UI\GameForm.cs" />
-        <Compile Include="UI\GraphicsExt.cs" />
-        <Compile Include="UI\Images.cs" />
+        <Compile Include="View\BaseControl.cs" />
+        <Compile Include="View\GameControl.cs" />
+        <Compile Include="View\GameForm.cs" />
+        <Compile Include="View\GraphicsExt.cs" />
+        <Compile Include="View\Images.cs" />
+        <Compile Include="View\MenuControl.cs" />
     </ItemGroup>
     <ItemGroup>
       <Content Include="Textures\player.png">
