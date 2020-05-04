@@ -5,7 +5,7 @@
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
         <ProjectGuid>{1CAD31B9-526C-4C42-9EE1-B3BB45603E8C}</ProjectGuid>
-        <OutputType>Exe</OutputType>
+        <OutputType>WinExe</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>BlindMan</RootNamespace>
         <AssemblyName>BlindMan</AssemblyName>
@@ -47,15 +47,15 @@
         <Compile Include="Domain\GameModel.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="View\BaseControl.cs" />
-        <Compile Include="View\GameControl.cs" />
+        <Compile Include="View\Controls\BaseControl.cs" />
+        <Compile Include="View\Controls\GameControl.cs" />
+        <Compile Include="View\Controls\MenuControl.cs" />
         <Compile Include="View\GameForm.cs" />
         <Compile Include="View\GraphicsExt.cs" />
         <Compile Include="View\Images.cs" />
-        <Compile Include="View\MenuControl.cs" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include="Textures\player.png">
+      <Content Include="Assets\Textures\player.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

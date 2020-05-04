@@ -10,6 +10,7 @@ namespace BlindMan
         public BaseControl(GameModel gameModel)
         {
             Size = new Size(GameSettings.GameWidth, GameSettings.GameHeight);
+            Dock = DockStyle.Fill;
             DoubleBuffered = true;
             this.gameModel = gameModel;
         }

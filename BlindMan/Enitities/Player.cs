@@ -2,7 +2,7 @@
 {
     public class Player : Entity
     {
-        private int speed = 120;
+        private int speed = 200;
 
         public Player(int x, int y, int width, int height)
         {

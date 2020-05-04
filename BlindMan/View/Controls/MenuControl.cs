@@ -8,10 +8,14 @@ namespace BlindMan
         {
             var startButton = new Button();
             startButton.Text = "Start";
-            startButton.Left = (ClientSize.Width - startButton.Width) / 2;
-            startButton.Top = (ClientSize.Height - startButton.Height) / 2;
             startButton.Click += (sender, args) => gameModel.GameState = GameState.Game;
             Controls.Add(startButton);
+
+            SizeChanged += (sender, args) =>
+            {
+                startButton.Left = (ClientSize.Width - startButton.Width) / 2;
+                startButton.Top = (ClientSize.Height - startButton.Height) / 2;
+            };
         }
     }
 }
