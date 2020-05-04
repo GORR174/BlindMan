@@ -16,7 +16,7 @@
           <e p="GameModel.cs" t="Include" />
           <e p="GameState.cs" t="Include" />
         </e>
-        <e p="Enitities" t="Include">
+        <e p="Entities" t="Include">
           <e p="Entity.cs" t="Include" />
           <e p="Player.cs" t="Include" />
         </e>

@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace BlindMan.Enitities
+﻿namespace BlindMan.Entities
 {
     public abstract class Entity
     {

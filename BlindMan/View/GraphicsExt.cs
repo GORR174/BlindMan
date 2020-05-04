@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using BlindMan.Enitities;
+using BlindMan.Entities;
 
 namespace BlindMan
 {

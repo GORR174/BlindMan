@@ -41,8 +41,8 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Domain\GameState.cs" />
-        <Compile Include="Enitities\Entity.cs" />
-        <Compile Include="Enitities\Player.cs" />
+        <Compile Include="Entities\Entity.cs" />
+        <Compile Include="Entities\Player.cs" />
         <Compile Include="GameSettings.cs" />
         <Compile Include="Domain\GameModel.cs" />
         <Compile Include="Program.cs" />

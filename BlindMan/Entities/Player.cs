@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace BlindMan.Enitities
+namespace BlindMan.Entities
 {
     public class Player : Entity
     {

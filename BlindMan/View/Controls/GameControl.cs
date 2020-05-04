@@ -24,6 +24,30 @@ namespace BlindMan
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            Console.WriteLine("asd " + e.KeyData);
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            Console.WriteLine("DSA " + e.KeyData);
+        }
+        
+        protected override bool IsInputKey(Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Up:
+                case Keys.Down:
+                case Keys.Left:
+                case Keys.Right:
+                    return true;
+            }
+
+            return base.IsInputKey(keyData);
+        }
+
         private void Draw(Graphics graphics)
         {
             graphics.DrawEntity(images.Player, gameModel.Player);

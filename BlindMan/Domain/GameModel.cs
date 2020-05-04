@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using BlindMan.Enitities;
+using BlindMan.Entities;
 
 namespace BlindMan
 {
