@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace BlindMan
@@ -9,10 +10,16 @@ namespace BlindMan
 
         public BaseControl(GameModel gameModel)
         {
-            Size = new Size(GameSettings.GameWidth, GameSettings.GameHeight);
             Dock = DockStyle.Fill;
             DoubleBuffered = true;
             this.gameModel = gameModel;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            Size = new Size(Parent.ClientSize.Width, Parent.ClientSize.Height);
+            Focus();
         }
     }
 }

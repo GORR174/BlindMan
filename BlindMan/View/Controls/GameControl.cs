@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -15,6 +16,12 @@ namespace BlindMan
 
             StartGameUpdaterTimer(gameModel);
             StartFpsCounterTimer();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            gameModel.KeyDown(keyData);
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void Draw(Graphics graphics)

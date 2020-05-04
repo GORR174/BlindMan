@@ -8,7 +8,11 @@ namespace BlindMan.Enitities
         public float Y { get; protected set; }
         public int Width { get; protected set; }
         public int Height { get; protected set; }
-        public Point Type { get; set; }
+
+        public Entity(GameModel gameModel)
+        {
+            
+        }
 
         public virtual void Update(float deltaTime)
         {
