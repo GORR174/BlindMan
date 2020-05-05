@@ -45,7 +45,9 @@ namespace BlindMan.Domain
 
             var keysToRemove = possibleKeys.Where(key => 
                     Math.Abs(key.X) + Math.Abs(playerPosition.X) < 6
-                    && Math.Abs(key.Y) + Math.Abs(playerPosition.Y) < 6)
+                    && Math.Abs(key.Y) + Math.Abs(playerPosition.Y) < 6
+                    && Math.Abs(key.X) + Math.Abs(exitPosition.X) < 3
+                    && Math.Abs(key.Y) + Math.Abs(exitPosition.Y) < 3)
                 .ToList();
             
             keysToRemove.ForEach(key => possibleKeys.Remove(key));

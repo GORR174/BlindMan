@@ -5,8 +5,9 @@ namespace BlindMan.Entities
 {
     public class Player : Entity
     {
-        private Point labyrinthPosition;
+        public Point labyrinthPosition;
         private LabyrinthModel labyrinth;
+        public int Vision { get; }
         
         public Player(int x, int y, int width, int height, GameModel gameModel) : base(gameModel)
         {
@@ -14,6 +15,7 @@ namespace BlindMan.Entities
             Y = y * height;
             Width = width;
             Height = height;
+            Vision = 12;
 
             labyrinthPosition.X = x;
             labyrinthPosition.Y = y;

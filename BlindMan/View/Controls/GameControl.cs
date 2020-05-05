@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using BlindMan.Domain;
@@ -16,6 +17,8 @@ namespace BlindMan.View.Controls
 
             StartGameUpdaterTimer(gameModel);
             StartFpsCounterTimer();
+            
+            BackColor = Color.Black;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -32,14 +35,34 @@ namespace BlindMan.View.Controls
             {
                 for (var j = 0; j < lab.Width; j++)
                 {
-                    if (lab.Labyrinth[i, j] == LabyrinthModel.LabyrinthElements.WALL)
-                        graphics.DrawImage(images.Wall, j * 40, i * 40, 41, 41);
+                    if (IsVisibleByPlayer(new Point(j, i)))
+                    {
+                        if (lab.Labyrinth[i, j] == LabyrinthModel.LabyrinthElements.WALL)
+                        {
+                            graphics.FillRectangle(Brushes.MidnightBlue, j * 40, i * 40, 40, 40);
+                        }
+                        else
+                        {
+                            graphics.FillRectangle(Brushes.Beige, j * 40, i * 40, 40, 40);
+                        }
+                    }
                 }
             }
-            graphics.DrawImage(images.ClosedDoor, lab.ExitPosition.X * 40, lab.ExitPosition.Y * 40, 41, 41);
-            graphics.DrawImage(images.Key, lab.KeyPosition.X * 40, lab.KeyPosition.Y * 40, 41, 41);
+            if (IsVisibleByPlayer(lab.ExitPosition))
+                graphics.DrawImage(images.ClosedDoor, lab.ExitPosition.X * 40, lab.ExitPosition.Y * 40, 40, 40);
+            if (IsVisibleByPlayer(lab.KeyPosition))
+                graphics.DrawImage(images.Key, lab.KeyPosition.X * 40, lab.KeyPosition.Y * 40, 40, 40);
             
             graphics.DrawEntity(images.Player, gameModel.Player);
+        }
+
+        private bool IsVisibleByPlayer(Point objectPosition)
+        {
+            var player = gameModel.Player;
+            if (Math.Pow(Math.Abs(player.labyrinthPosition.X - objectPosition.X), 2) +
+                Math.Pow(Math.Abs(player.labyrinthPosition.Y - objectPosition.Y), 2) < player.Vision)
+                return true;
+            return false;
         }
 
         private void StartGameUpdaterTimer(GameModel model)
