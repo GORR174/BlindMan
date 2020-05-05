@@ -9,6 +9,7 @@ namespace BlindMan.Domain
     public class LabyrinthGenerator
     {
         private HashSet<Point> possibleExits;
+        private HashSet<Point> possibleKeys;
         
         private LabyrinthElements[,] GenerateDefaultLabyrinth(int width, int height)
         {
@@ -30,17 +31,31 @@ namespace BlindMan.Domain
         public LabyrinthModel CreateLabyrinth(int width, int height)
         {
             possibleExits = new HashSet<Point>();
+            possibleKeys = new HashSet<Point>();
             var labyrinthElements = GenerateDefaultLabyrinth(width, height);
 
             var playerPosition = GetRandomPlayerPosition(width, height);
             
             GenerateLabyrinth(width, height, labyrinthElements, playerPosition);
 
-            var exit = possibleExits.ToList()[new Random().Next(possibleExits.Count)];
+            var exitPosition = possibleExits.ToList()[new Random().Next(possibleExits.Count)];
+
+            if (possibleKeys.Contains(exitPosition))
+                possibleKeys.Remove(exitPosition);
+
+            var keysToRemove = possibleKeys.Where(key => 
+                    Math.Abs(key.X) + Math.Abs(playerPosition.X) < 6
+                    && Math.Abs(key.Y) + Math.Abs(playerPosition.Y) < 6)
+                .ToList();
+            
+            keysToRemove.ForEach(key => possibleKeys.Remove(key));
+            
+            var keyPosition = possibleKeys.ToList()[new Random().Next(possibleKeys.Count)];
 
             return new LabyrinthModel(labyrinthElements, playerPosition)
             {
-                ExitPosition = exit
+                ExitPosition = exitPosition,
+                KeyPosition = keyPosition
             };
         }
 
@@ -81,6 +96,7 @@ namespace BlindMan.Domain
 
                     toOpen = nextCell;
                     visited.Add(toOpen.Value);
+                    possibleKeys.Add(toOpen.Value);
                     if (GetNeighbours(toOpen.Value, width, height, visited).Count == 0)
                         possibleExits.Add(toOpen.Value);
                 }

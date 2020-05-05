@@ -7,6 +7,7 @@ namespace BlindMan.View
         public Image Player { get; private set; }
         public Image Wall { get; private set; }
         public Image ClosedDoor { get; private set; }
+        public Image Key { get; private set; }
 
         private Image LoadImageFromAssets(string fileName) =>
             Image.FromFile("Assets/Textures/" + fileName);
@@ -16,6 +17,7 @@ namespace BlindMan.View
             Player = LoadImageFromAssets("player.png");
             Wall = LoadImageFromAssets("wall.png");
             ClosedDoor = LoadImageFromAssets("closed_door.png");
+            Key = LoadImageFromAssets("key.jpg");
         }
     }
 }
