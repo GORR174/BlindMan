@@ -8,8 +8,9 @@ namespace BlindMan.Entities
         public Point labyrinthPosition;
         private LabyrinthModel labyrinth;
         private GameModel gameModel;
-        public int Vision { get; }
+        public int Vision { get; private set; }
         public bool HasKey { get; private set; }
+        public bool HasGlasses { get; private set; }
         
         public Player(int x, int y, int width, int height, GameModel gameModel) : base(gameModel)
         {
@@ -17,8 +18,9 @@ namespace BlindMan.Entities
             Y = y * height;
             Width = width;
             Height = height;
-            Vision = 12;
+            Vision = 8;
             HasKey = false;
+            HasGlasses = false;
 
             this.gameModel = gameModel;
 
@@ -52,6 +54,12 @@ namespace BlindMan.Entities
 
             if (!HasKey && labyrinthPosition == labyrinth.KeyPosition)
                 HasKey = true;
+            
+            if (!HasGlasses && labyrinthPosition == labyrinth.GlassesPosition)
+            {
+                HasGlasses = true;
+                Vision += 16;
+            }
         }
         
         public override void Update(float deltaTime)

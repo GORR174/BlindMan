@@ -10,6 +10,7 @@ namespace BlindMan.Domain
     {
         private HashSet<Point> possibleExits;
         private HashSet<Point> possibleKeys;
+        private HashSet<Point> possibleGlasses;
         
         private LabyrinthElements[,] GenerateDefaultLabyrinth(int width, int height)
         {
@@ -32,13 +33,15 @@ namespace BlindMan.Domain
         {
             possibleExits = new HashSet<Point>();
             possibleKeys = new HashSet<Point>();
+            possibleGlasses = new HashSet<Point>();
             var labyrinthElements = GenerateDefaultLabyrinth(width, height);
 
             var playerPosition = GetRandomPlayerPosition(width, height);
             
             GenerateLabyrinth(width, height, labyrinthElements, playerPosition);
+            var random = new Random();
 
-            var exitPosition = possibleExits.ToList()[new Random().Next(possibleExits.Count)];
+            var exitPosition = possibleExits.ToList()[random.Next(possibleExits.Count)];
 
             if (possibleKeys.Contains(exitPosition))
                 possibleKeys.Remove(exitPosition);
@@ -52,12 +55,31 @@ namespace BlindMan.Domain
             
             keysToRemove.ForEach(key => possibleKeys.Remove(key));
             
-            var keyPosition = possibleKeys.ToList()[new Random().Next(possibleKeys.Count)];
+            var keyPosition = possibleKeys.ToList()[random.Next(possibleKeys.Count)];
+            
+            if (possibleGlasses.Contains(exitPosition))
+                possibleGlasses.Remove(exitPosition);
+            if (possibleGlasses.Contains(keyPosition))
+                possibleGlasses.Remove(keyPosition);
+
+            var glassesToRemove = possibleGlasses.Where(glasses => 
+                    Math.Abs(glasses.X) + Math.Abs(playerPosition.X) < 6
+                    && Math.Abs(glasses.Y) + Math.Abs(playerPosition.Y) < 6
+                    && Math.Abs(glasses.X) + Math.Abs(exitPosition.X) < 3
+                    && Math.Abs(glasses.Y) + Math.Abs(exitPosition.Y) < 3
+                    && Math.Abs(glasses.X) + Math.Abs(keyPosition.X) < 4
+                    && Math.Abs(glasses.Y) + Math.Abs(keyPosition.Y) < 4)
+                .ToList();
+            
+            glassesToRemove.ForEach(glasses => possibleGlasses.Remove(glasses));
+            
+            var glassesPosition = possibleGlasses.ToList()[random.Next(possibleGlasses.Count)];
 
             return new LabyrinthModel(labyrinthElements, playerPosition)
             {
                 ExitPosition = exitPosition,
-                KeyPosition = keyPosition
+                KeyPosition = keyPosition,
+                GlassesPosition = glassesPosition
             };
         }
 
@@ -99,6 +121,7 @@ namespace BlindMan.Domain
                     toOpen = nextCell;
                     visited.Add(toOpen.Value);
                     possibleKeys.Add(toOpen.Value);
+                    possibleGlasses.Add(toOpen.Value);
                     if (GetNeighbours(toOpen.Value, width, height, visited).Count == 0)
                         possibleExits.Add(toOpen.Value);
                 }

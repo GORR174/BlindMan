@@ -63,6 +63,8 @@ namespace BlindMan.View.Controls
 
             if (IsVisibleByPlayer(lab.KeyPosition) && !gameModel.Player.HasKey)
                 graphics.DrawImage(images.Key, lab.KeyPosition.X * 40, lab.KeyPosition.Y * 40, 40, 40);
+            if (IsVisibleByPlayer(lab.GlassesPosition) && !gameModel.Player.HasGlasses)
+                graphics.DrawImage(images.Glasses, lab.GlassesPosition.X * 40, lab.GlassesPosition.Y * 40, 40, 40);
             
             graphics.DrawEntity(images.Player, gameModel.Player);
         }
