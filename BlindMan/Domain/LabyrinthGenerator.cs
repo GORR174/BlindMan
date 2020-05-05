@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using static BlindMan.Domain.LabyrinthModel;
 
 namespace BlindMan.Domain
 {
     public class LabyrinthGenerator
     {
+        private HashSet<Point> possibleExits;
+        
         private LabyrinthElements[,] GenerateDefaultLabyrinth(int width, int height)
         {
             var labyrinthElements = new LabyrinthElements[height, width];
@@ -26,13 +29,19 @@ namespace BlindMan.Domain
         
         public LabyrinthModel CreateLabyrinth(int width, int height)
         {
+            possibleExits = new HashSet<Point>();
             var labyrinthElements = GenerateDefaultLabyrinth(width, height);
 
             var playerPosition = GetRandomPlayerPosition(width, height);
             
             GenerateLabyrinth(width, height, labyrinthElements, playerPosition);
 
-            return new LabyrinthModel(labyrinthElements, playerPosition);
+            var exit = possibleExits.ToList()[new Random().Next(possibleExits.Count)];
+
+            return new LabyrinthModel(labyrinthElements, playerPosition)
+            {
+                ExitPosition = exit
+            };
         }
 
         private Point GetRandomPlayerPosition(int width, int height)
@@ -49,7 +58,7 @@ namespace BlindMan.Domain
             return possiblePlayerPositions[new Random().Next(possiblePlayerPositions.Count)];
         }
 
-        private static void GenerateLabyrinth(int width, int height, LabyrinthElements[,] labyrinthElements, Point startPoint)
+        private void GenerateLabyrinth(int width, int height, LabyrinthElements[,] labyrinthElements, Point startPoint)
         {
             Point? toOpen = startPoint;
             var visited = new HashSet<Point>();
@@ -59,25 +68,7 @@ namespace BlindMan.Domain
 
             do
             {
-                var neighbours = new List<Point>();
-
-                for (int i = -1; i < 2; i++)
-                {
-                    for (int j = -1; j < 2; j++)
-                    {
-                        if ((Math.Abs(i) + Math.Abs(j)) == 1)
-                        {
-                            var neighbourX = toOpen.Value.X + (j * 2);
-                            var neighbourY = toOpen.Value.Y + (i * 2);
-                            if (neighbourX > width - 1 || neighbourX < 0)
-                                continue;
-                            if (neighbourY > height - 1 || neighbourY < 0)
-                                continue;
-                            if (!visited.Contains(new Point(neighbourX, neighbourY)))
-                                neighbours.Add(new Point(neighbourX, neighbourY));
-                        }
-                    }
-                }
+                var neighbours = GetNeighbours(toOpen.Value, width, height, visited);
 
                 if (neighbours.Count > 0)
                 {
@@ -90,6 +81,8 @@ namespace BlindMan.Domain
 
                     toOpen = nextCell;
                     visited.Add(toOpen.Value);
+                    if (GetNeighbours(toOpen.Value, width, height, visited).Count == 0)
+                        possibleExits.Add(toOpen.Value);
                 }
                 else if (stack.Count > 0)
                 {
@@ -101,6 +94,31 @@ namespace BlindMan.Domain
                     toOpen = null;
                 }
             } while (toOpen != null);
+        }
+
+        private List<Point> GetNeighbours(Point point, int width, int height, HashSet<Point> visited)
+        {
+            var neighbours = new List<Point>();
+
+            for (int i = -1; i < 2; i++)
+            {
+                for (int j = -1; j < 2; j++)
+                {
+                    if ((Math.Abs(i) + Math.Abs(j)) == 1)
+                    {
+                        var neighbourX = point.X + (j * 2);
+                        var neighbourY = point.Y + (i * 2);
+                        if (neighbourX > width - 1 || neighbourX < 0)
+                            continue;
+                        if (neighbourY > height - 1 || neighbourY < 0)
+                            continue;
+                        if (!visited.Contains(new Point(neighbourX, neighbourY)))
+                            neighbours.Add(new Point(neighbourX, neighbourY));
+                    }
+                }
+            }
+
+            return neighbours;
         }
     }
 }

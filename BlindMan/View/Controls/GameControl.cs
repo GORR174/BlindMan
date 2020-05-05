@@ -36,6 +36,7 @@ namespace BlindMan.View.Controls
                         graphics.DrawImage(images.Wall, j * 40, i * 40, 41, 41);
                 }
             }
+            graphics.DrawImage(images.ClosedDoor, lab.ExitPosition.X * 40, lab.ExitPosition.Y * 40, 41, 41);
             
             graphics.DrawEntity(images.Player, gameModel.Player);
         }

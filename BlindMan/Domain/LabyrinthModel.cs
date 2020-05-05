@@ -10,6 +10,8 @@ namespace BlindMan.Domain
         public int Height => Labyrinth.GetLength(0);
         
         public Point PlayerPosition { get; }
+        public Point ExitPosition { get; set; }
+        public Point KeyPosition { get; set; }
 
         public LabyrinthModel(LabyrinthElements[,] labyrinth, Point playerPosition)
         {
@@ -20,7 +22,7 @@ namespace BlindMan.Domain
         public enum LabyrinthElements
         {
             WALL,
-            CELL
+            CELL,
         }
     }
 }

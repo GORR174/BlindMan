@@ -57,6 +57,9 @@
         <Compile Include="View\Images.cs" />
     </ItemGroup>
     <ItemGroup>
+      <EmbeddedResource Include="Assets\Textures\closed_door.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
       <EmbeddedResource Include="Assets\Textures\wall.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>
