@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
+using BlindMan.Domain;
 
-namespace BlindMan
+namespace BlindMan.View.Controls
 {
     public class MenuControl : BaseControl
     {

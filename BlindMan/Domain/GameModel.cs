@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using BlindMan.Entities;
 
-namespace BlindMan
+namespace BlindMan.Domain
 {
     public class GameModel
     {
@@ -26,9 +26,12 @@ namespace BlindMan
         public event Action UpKeyDown;
         public event Action DownKeyDown;
 
+        public LabyrinthModel Labyrinth;
+
         public GameModel()
         {
             Player = new Player(0, 200, 40, 40, this);
+            Labyrinth = new LabyrinthGenerator().CreateLabyrinth(31, 17);
         }
         
         public void Update(float deltaTime)

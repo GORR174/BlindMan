@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using BlindMan.Domain;
 
-namespace BlindMan
+namespace BlindMan.View.Controls
 {
     public abstract class BaseControl : UserControl
     {

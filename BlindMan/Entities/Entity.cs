@@ -1,4 +1,6 @@
-﻿namespace BlindMan.Entities
+﻿using BlindMan.Domain;
+
+namespace BlindMan.Entities
 {
     public abstract class Entity
     {

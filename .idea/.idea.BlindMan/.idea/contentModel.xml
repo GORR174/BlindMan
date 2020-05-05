@@ -8,6 +8,7 @@
         <e p="Assets" t="Include">
           <e p="Textures" t="Include">
             <e p="player.png" t="Include" />
+            <e p="wall.png" t="Include" />
           </e>
         </e>
         <e p="bin" t="ExcludeRecursive" />
@@ -15,6 +16,8 @@
         <e p="Domain" t="Include">
           <e p="GameModel.cs" t="Include" />
           <e p="GameState.cs" t="Include" />
+          <e p="LabyrinthGenerator.cs" t="Include" />
+          <e p="labyrinthModel.cs" t="Include" />
         </e>
         <e p="Entities" t="Include">
           <e p="Entity.cs" t="Include" />

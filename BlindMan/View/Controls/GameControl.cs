@@ -1,9 +1,9 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using BlindMan.Domain;
 
-namespace BlindMan
+namespace BlindMan.View.Controls
 {
     public class GameControl : BaseControl
     {
@@ -24,32 +24,19 @@ namespace BlindMan
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            Console.WriteLine("asd " + e.KeyData);
-        }
-
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-            Console.WriteLine("DSA " + e.KeyData);
-        }
-        
-        protected override bool IsInputKey(Keys keyData)
-        {
-            switch (keyData)
-            {
-                case Keys.Up:
-                case Keys.Down:
-                case Keys.Left:
-                case Keys.Right:
-                    return true;
-            }
-
-            return base.IsInputKey(keyData);
-        }
-
         private void Draw(Graphics graphics)
         {
+            var lab = gameModel.Labyrinth;
+            
+            for (var i = 0; i < lab.Height; i++)
+            {
+                for (var j = 0; j < lab.Width; j++)
+                {
+                    if (lab.Labyrinth[i, j] == LabyrinthModel.LabyrinthElements.WALL)
+                        graphics.DrawImage(images.Wall, j * 40, i * 40, 41, 41);
+                }
+            }
+            
             graphics.DrawEntity(images.Player, gameModel.Player);
         }
 

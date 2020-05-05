@@ -41,6 +41,8 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Domain\GameState.cs" />
+        <Compile Include="Domain\LabyrinthGenerator.cs" />
+        <Compile Include="Domain\LabyrinthModel.cs" />
         <Compile Include="Entities\Entity.cs" />
         <Compile Include="Entities\Player.cs" />
         <Compile Include="GameSettings.cs" />
@@ -55,6 +57,9 @@
         <Compile Include="View\Images.cs" />
     </ItemGroup>
     <ItemGroup>
+      <EmbeddedResource Include="Assets\Textures\wall.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
       <Content Include="Assets\Textures\player.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>

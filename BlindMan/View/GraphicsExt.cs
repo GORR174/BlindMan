@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using BlindMan.Entities;
 
-namespace BlindMan
+namespace BlindMan.View
 {
     public static class GraphicsExt
     {

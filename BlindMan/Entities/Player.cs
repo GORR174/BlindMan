@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using BlindMan.Domain;
 
 namespace BlindMan.Entities
 {

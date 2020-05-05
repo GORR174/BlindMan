@@ -1,7 +1,9 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using BlindMan.Domain;
+using BlindMan.View.Controls;
 
-namespace BlindMan
+namespace BlindMan.View
 {
     public class GameForm : Form
     {

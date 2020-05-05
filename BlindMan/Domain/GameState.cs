@@ -1,4 +1,4 @@
-﻿namespace BlindMan
+﻿namespace BlindMan.Domain
 {
     public enum GameState
     {

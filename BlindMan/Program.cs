@@ -1,4 +1,6 @@
 ﻿using System.Windows.Forms;
+using BlindMan.Domain;
+using BlindMan.View;
 
 namespace BlindMan
 {
