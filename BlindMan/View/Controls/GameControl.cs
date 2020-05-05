@@ -10,11 +10,15 @@ namespace BlindMan.View.Controls
     {
         Images images = new Images();
         private int fps;
+        private Timer fpsTimer;
+        private Timer updateTimer;
+        private Stopwatch deltaTimeWatch;
 
         public GameControl(GameModel gameModel) : base(gameModel)
         {
             images.Load();
 
+            gameModel.StartGame();
             StartGameUpdaterTimer(gameModel);
             StartFpsCounterTimer();
             
@@ -48,9 +52,16 @@ namespace BlindMan.View.Controls
                     }
                 }
             }
+
             if (IsVisibleByPlayer(lab.ExitPosition))
-                graphics.DrawImage(images.ClosedDoor, lab.ExitPosition.X * 40, lab.ExitPosition.Y * 40, 40, 40);
-            if (IsVisibleByPlayer(lab.KeyPosition))
+            {
+                if (!gameModel.Player.HasKey)
+                    graphics.DrawImage(images.ClosedDoor, lab.ExitPosition.X * 40, lab.ExitPosition.Y * 40, 40, 40);
+                else
+                    graphics.DrawImage(images.OpenedDoor, lab.ExitPosition.X * 40, lab.ExitPosition.Y * 40, 40, 40);
+            }
+
+            if (IsVisibleByPlayer(lab.KeyPosition) && !gameModel.Player.HasKey)
                 graphics.DrawImage(images.Key, lab.KeyPosition.X * 40, lab.KeyPosition.Y * 40, 40, 40);
             
             graphics.DrawEntity(images.Player, gameModel.Player);
@@ -67,9 +78,9 @@ namespace BlindMan.View.Controls
 
         private void StartGameUpdaterTimer(GameModel model)
         {
-            var deltaTimeWatch = new Stopwatch();
+            deltaTimeWatch = new Stopwatch();
             deltaTimeWatch.Start();
-            var updateTimer = new Timer();
+            updateTimer = new Timer();
             updateTimer.Interval = 1000 / GameSettings.GameTPS;
             updateTimer.Tick += (sender, args) =>
             {
@@ -83,7 +94,7 @@ namespace BlindMan.View.Controls
 
         private void StartFpsCounterTimer()
         {
-            var fpsTimer = new Timer();
+            fpsTimer = new Timer();
             fpsTimer.Interval = 1000;
             fpsTimer.Tick += (sender, args) =>
             {
@@ -108,6 +119,16 @@ namespace BlindMan.View.Controls
             Draw(graphics);
             
             graphics.Restore(graphicsState);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            fpsTimer.Stop();
+            fpsTimer.Dispose();
+            updateTimer.Stop();
+            updateTimer.Dispose();
+            deltaTimeWatch.Stop();
+            base.Dispose(disposing);
         }
     }
 }

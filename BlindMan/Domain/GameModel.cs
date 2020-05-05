@@ -28,10 +28,19 @@ namespace BlindMan.Domain
 
         public LabyrinthModel Labyrinth;
 
-        public GameModel()
+        public void StartGame()
         {
             Labyrinth = new LabyrinthGenerator().CreateLabyrinth(31, 17);
             Player = new Player(Labyrinth.PlayerPosition.X, Labyrinth.PlayerPosition.Y, 40, 40, this);
+        }
+
+        public void EndGame()
+        {
+            LeftKeyDown = () => { };
+            RightKeyDown = () => { };
+            UpKeyDown = () => { };
+            DownKeyDown = () => { };
+            GameState = GameState.GameWon;
         }
         
         public void Update(float deltaTime)

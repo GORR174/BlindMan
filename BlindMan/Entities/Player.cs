@@ -7,7 +7,9 @@ namespace BlindMan.Entities
     {
         public Point labyrinthPosition;
         private LabyrinthModel labyrinth;
+        private GameModel gameModel;
         public int Vision { get; }
+        public bool HasKey { get; private set; }
         
         public Player(int x, int y, int width, int height, GameModel gameModel) : base(gameModel)
         {
@@ -16,6 +18,9 @@ namespace BlindMan.Entities
             Width = width;
             Height = height;
             Vision = 12;
+            HasKey = false;
+
+            this.gameModel = gameModel;
 
             labyrinthPosition.X = x;
             labyrinthPosition.Y = y;
@@ -36,10 +41,17 @@ namespace BlindMan.Entities
             labyrinthPosition.X = (int) (X / Width);
             labyrinthPosition.Y = (int) (Y / Height);
 
-            if (labyrinth.Labyrinth[labyrinthPosition.Y, labyrinthPosition.X] == LabyrinthModel.LabyrinthElements.WALL)
+            if (labyrinth.Labyrinth[labyrinthPosition.Y, labyrinthPosition.X] == LabyrinthModel.LabyrinthElements.WALL 
+                || (!HasKey && labyrinth.ExitPosition == labyrinthPosition))
             {
                 Move(new Point(-vector.X, -vector.Y));
             }
+
+            if (HasKey && labyrinth.ExitPosition == labyrinthPosition)
+                gameModel.EndGame();
+
+            if (!HasKey && labyrinthPosition == labyrinth.KeyPosition)
+                HasKey = true;
         }
         
         public override void Update(float deltaTime)

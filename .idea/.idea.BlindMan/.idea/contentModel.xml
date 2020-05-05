@@ -9,6 +9,7 @@
           <e p="Textures" t="Include">
             <e p="closed_door.png" t="Include" />
             <e p="key.jpg" t="Include" />
+            <e p="opened_door.png" t="Include" />
             <e p="player.png" t="Include" />
             <e p="wall.png" t="Include" />
           </e>

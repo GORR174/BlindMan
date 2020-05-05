@@ -30,12 +30,17 @@ namespace BlindMan.View
                     SetControl(new GameControl(gameModel));
                     break;
                 case GameState.GameWon:
+                    gameModel.GameState = GameState.Menu;
                     break;
             }
         }
 
         private void SetControl(BaseControl control)
         {
+            foreach (Control _control in Controls)
+            {
+                _control.Dispose();
+            }
             Controls.Clear();
             Controls.Add(control);
         }
