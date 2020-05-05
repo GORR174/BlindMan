@@ -28,9 +28,25 @@ namespace BlindMan.Domain
         {
             var labyrinthElements = GenerateDefaultLabyrinth(width, height);
 
-            GenerateLabyrinth(width, height, labyrinthElements, new Point(1, 1));
+            var playerPosition = GetRandomPlayerPosition(width, height);
+            
+            GenerateLabyrinth(width, height, labyrinthElements, playerPosition);
 
-            return new LabyrinthModel(labyrinthElements);
+            return new LabyrinthModel(labyrinthElements, playerPosition);
+        }
+
+        private Point GetRandomPlayerPosition(int width, int height)
+        {
+            var possiblePlayerPositions = new List<Point>
+            {
+                new Point(1, 1),
+                new Point(width - 2, 1),
+                new Point(width - 2, height - 2),
+                new Point(1, height - 2),
+                new Point(width / 2, height / 2 - 1)
+            };
+
+            return possiblePlayerPositions[new Random().Next(possiblePlayerPositions.Count)];
         }
 
         private static void GenerateLabyrinth(int width, int height, LabyrinthElements[,] labyrinthElements, Point startPoint)

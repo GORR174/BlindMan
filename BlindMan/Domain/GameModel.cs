@@ -30,8 +30,8 @@ namespace BlindMan.Domain
 
         public GameModel()
         {
-            Player = new Player(0, 200, 40, 40, this);
             Labyrinth = new LabyrinthGenerator().CreateLabyrinth(31, 17);
+            Player = new Player(Labyrinth.PlayerPosition.X, Labyrinth.PlayerPosition.Y, 40, 40, this);
         }
         
         public void Update(float deltaTime)
@@ -58,6 +58,10 @@ namespace BlindMan.Domain
                 case Keys.S:
                 case Keys.Down:
                     DownKeyDown?.Invoke();
+                    break;
+                case Keys.Space:
+                    Labyrinth = new LabyrinthGenerator().CreateLabyrinth(31, 17);
+                    Player = new Player(Labyrinth.PlayerPosition.X, Labyrinth.PlayerPosition.Y, 40, 40, this);
                     break;
             }
         }

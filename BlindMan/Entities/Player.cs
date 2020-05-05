@@ -5,13 +5,21 @@ namespace BlindMan.Entities
 {
     public class Player : Entity
     {
+        private Point labyrinthPosition;
+        private LabyrinthModel labyrinth;
+        
         public Player(int x, int y, int width, int height, GameModel gameModel) : base(gameModel)
         {
-            X = x;
-            Y = y;
+            X = x * width;
+            Y = y * height;
             Width = width;
             Height = height;
 
+            labyrinthPosition.X = x;
+            labyrinthPosition.Y = y;
+
+            labyrinth = gameModel.Labyrinth;
+            
             gameModel.LeftKeyDown += () => Move(new Point(-1, 0));
             gameModel.RightKeyDown += () => Move(new Point(1, 0));
             gameModel.UpKeyDown += () => Move(new Point(0, -1));
@@ -22,6 +30,14 @@ namespace BlindMan.Entities
         {
             X += vector.X * Width;
             Y += vector.Y * Height;
+            
+            labyrinthPosition.X = (int) (X / Width);
+            labyrinthPosition.Y = (int) (Y / Height);
+
+            if (labyrinth.Labyrinth[labyrinthPosition.Y, labyrinthPosition.X] == LabyrinthModel.LabyrinthElements.WALL)
+            {
+                Move(new Point(-vector.X, -vector.Y));
+            }
         }
         
         public override void Update(float deltaTime)
