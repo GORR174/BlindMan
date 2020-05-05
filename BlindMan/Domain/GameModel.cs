@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using BlindMan.Entities;
 
@@ -28,14 +29,24 @@ namespace BlindMan.Domain
 
         public LabyrinthModel Labyrinth;
 
+        public string GameTime =>
+            $"{stopwatch.Elapsed.Minutes:d2}:" +
+            $"{stopwatch.Elapsed.Seconds:d2}:" +
+            $"{(stopwatch.Elapsed.Milliseconds / 10):d2}";
+
+        private Stopwatch stopwatch = new Stopwatch();
+
         public void StartGame()
         {
+            stopwatch.Reset();
+            stopwatch.Start();
             Labyrinth = new LabyrinthGenerator().CreateLabyrinth(31, 17);
             Player = new Player(Labyrinth.PlayerPosition.X, Labyrinth.PlayerPosition.Y, 40, 40, this);
         }
 
         public void EndGame()
         {
+            stopwatch.Stop();
             LeftKeyDown = () => { };
             RightKeyDown = () => { };
             UpKeyDown = () => { };
@@ -69,6 +80,7 @@ namespace BlindMan.Domain
                     DownKeyDown?.Invoke();
                     break;
                 case Keys.Space:
+                    GameState = GameState.GameWon;
                     Labyrinth = new LabyrinthGenerator().CreateLabyrinth(31, 17);
                     Player = new Player(Labyrinth.PlayerPosition.X, Labyrinth.PlayerPosition.Y, 40, 40, this);
                     break;

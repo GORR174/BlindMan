@@ -9,6 +9,7 @@ namespace BlindMan.View.Controls
     public class GameControl : BaseControl
     {
         Images images = new Images();
+        Fonts fonts = new Fonts();
         private int fps;
         private Timer fpsTimer;
         private Timer updateTimer;
@@ -17,6 +18,7 @@ namespace BlindMan.View.Controls
         public GameControl(GameModel gameModel) : base(gameModel)
         {
             images.Load();
+            fonts.Load();
 
             gameModel.StartGame();
             StartGameUpdaterTimer(gameModel);
@@ -67,6 +69,12 @@ namespace BlindMan.View.Controls
                 graphics.DrawImage(images.Glasses, lab.GlassesPosition.X * 40, lab.GlassesPosition.Y * 40, 40, 40);
             
             graphics.DrawEntity(images.Player, gameModel.Player);
+            
+            
+            graphics.DrawString(gameModel.GameTime, fonts.Fixedsys24, Brushes.White, GameSettings.GameWidth / 2f, 2, new StringFormat()
+            {
+                Alignment = StringAlignment.Center
+            });
         }
 
         private bool IsVisibleByPlayer(Point objectPosition)

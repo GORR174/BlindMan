@@ -6,6 +6,9 @@
     <e p="D:\Programming\projects\Rider\BlindMan" t="IncludeFlat">
       <e p="BlindMan" t="IncludeRecursive">
         <e p="Assets" t="Include">
+          <e p="Fonts" t="Include">
+            <e p="fixedsys.ttf" t="Include" />
+          </e>
           <e p="Textures" t="Include">
             <e p="closed_door.png" t="Include" />
             <e p="glasses.png" t="Include" />
@@ -38,7 +41,9 @@
             <e p="BaseControl.cs" t="Include" />
             <e p="GameControl.cs" t="Include" />
             <e p="MenuControl.cs" t="Include" />
+            <e p="WinControl.cs" t="Include" />
           </e>
+          <e p="Fonts.cs" t="Include" />
           <e p="GameForm.cs" t="Include" />
           <e p="GraphicsExt.cs" t="Include" />
           <e p="Images.cs" t="Include" />
