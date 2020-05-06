@@ -25,8 +25,8 @@ namespace BlindMan.Domain
 
         public enum LabyrinthElements
         {
-            WALL,
-            CELL,
+            Wall,
+            Cell
         }
     }
 }

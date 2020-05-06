@@ -35,14 +35,12 @@ namespace BlindMan.View
             }
         }
 
-        private void SetControl(BaseControl control)
+        private void SetControl(BaseControl newControl)
         {
-            foreach (Control _control in Controls)
-            {
-                _control.Dispose();
-            }
+            foreach (Control control in Controls)
+                control.Dispose();
             Controls.Clear();
-            Controls.Add(control);
+            Controls.Add(newControl);
         }
     }
 }

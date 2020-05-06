@@ -6,8 +6,8 @@ namespace BlindMan.View
     {
         public Image Player { get; private set; }
         public Image Wall { get; private set; }
-        public Image ClosedDoor { get; private set; }
-        public Image OpenedDoor { get; private set; }
+        public Image DoorClosed { get; private set; }
+        public Image DoorOpen { get; private set; }
         public Image Key { get; private set; }
         public Image Glasses { get; private set; }
         public Image Portal { get; private set; }
@@ -19,8 +19,8 @@ namespace BlindMan.View
         {
             Player = LoadImageFromAssets("player.png");
             Wall = LoadImageFromAssets("wall.png");
-            ClosedDoor = LoadImageFromAssets("door_closed.png");
-            OpenedDoor = LoadImageFromAssets("door_open.png");
+            DoorClosed = LoadImageFromAssets("door_closed.png");
+            DoorOpen = LoadImageFromAssets("door_open.png");
             Key = LoadImageFromAssets("key.jpg");
             Glasses = LoadImageFromAssets("glasses.png");
             Portal = LoadImageFromAssets("portal.png");

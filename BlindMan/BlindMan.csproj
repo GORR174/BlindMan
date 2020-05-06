@@ -40,11 +40,11 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Domain\EntityModel.cs" />
         <Compile Include="Domain\GameState.cs" />
         <Compile Include="Domain\LabyrinthGenerator.cs" />
         <Compile Include="Domain\LabyrinthModel.cs" />
-        <Compile Include="Entities\Entity.cs" />
-        <Compile Include="Entities\Player.cs" />
+        <Compile Include="Domain\PlayerModel.cs" />
         <Compile Include="GameSettings.cs" />
         <Compile Include="Domain\GameModel.cs" />
         <Compile Include="Program.cs" />
@@ -55,7 +55,6 @@
         <Compile Include="View\Controls\WinControl.cs" />
         <Compile Include="View\Fonts.cs" />
         <Compile Include="View\GameForm.cs" />
-        <Compile Include="View\GraphicsExt.cs" />
         <Compile Include="View\Images.cs" />
     </ItemGroup>
     <ItemGroup>

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using BlindMan.Domain;
-using BlindMan.Entities;
 
 namespace BlindMan.View.Controls
 {
@@ -14,8 +12,9 @@ namespace BlindMan.View.Controls
         private int fps;
         private Timer fpsTimer;
         private Timer updateTimer;
-        private Stopwatch deltaTimeWatch;
 
+        private const int TileSize = 40;
+        
         public GameControl(GameModel gameModel) : base(gameModel)
         {
             images.Load();
@@ -42,16 +41,13 @@ namespace BlindMan.View.Controls
             {
                 for (var j = 0; j < lab.Width; j++)
                 {
-                    if (IsVisibleByPlayer(new Point(j, i)))
+                    var tilePosition = new Point(j, i);
+                    if (IsVisibleByPlayer(tilePosition))
                     {
-                        if (lab.Labyrinth[i, j] == LabyrinthModel.LabyrinthElements.WALL)
-                        {
-                            graphics.FillRectangle(Brushes.MidnightBlue, j * 40, i * 40, 40, 40);
-                        }
+                        if (lab.Labyrinth[i, j] == LabyrinthModel.LabyrinthElements.Wall)
+                            DrawTileRectangle(graphics, Brushes.MidnightBlue, tilePosition);
                         else
-                        {
-                            graphics.FillRectangle(Brushes.Beige, j * 40, i * 40, 40, 40);
-                        }
+                            DrawTileRectangle(graphics, Brushes.Beige, tilePosition);
                     }
                 }
             }
@@ -59,27 +55,27 @@ namespace BlindMan.View.Controls
             lab.PortalPositions.ForEach(portalPosition =>
             {
                 if (IsVisibleByPlayer(portalPosition))
-                    graphics.DrawImage(images.Portal, portalPosition.X * 40 + 5, portalPosition.Y * 40 + 5, 30, 30);
+                    DrawTile(graphics, images.Portal, portalPosition);
             });
 
             if (IsVisibleByPlayer(lab.ExitPosition))
             {
                 if (!gameModel.Player.HasKey)
-                    graphics.DrawImage(images.ClosedDoor, lab.ExitPosition.X * 40, lab.ExitPosition.Y * 40, 40, 40);
+                    DrawTile(graphics, images.DoorClosed, lab.ExitPosition);
                 else
-                    graphics.DrawImage(images.OpenedDoor, lab.ExitPosition.X * 40, lab.ExitPosition.Y * 40, 40, 40);
+                    DrawTile(graphics, images.DoorOpen, lab.ExitPosition);
             }
 
             if (IsVisibleByPlayer(lab.KeyPosition) && !gameModel.Player.HasKey)
-                graphics.DrawImage(images.Key, lab.KeyPosition.X * 40, lab.KeyPosition.Y * 40, 40, 40);
+                DrawTile(graphics, images.Key, lab.KeyPosition);
             if (IsVisibleByPlayer(lab.GlassesPosition) && !gameModel.Player.HasGlasses)
-                graphics.DrawImage(images.Glasses, lab.GlassesPosition.X * 40, lab.GlassesPosition.Y * 40, 40, 40);
+                DrawTile(graphics, images.Glasses, lab.GlassesPosition);
             
-            graphics.DrawEntity(images.Player, gameModel.Player);
+            DrawTile(graphics, images.Player, new Point(gameModel.Player.X, gameModel.Player.Y));
 
             if (gameModel.Player.IsDisarming)
-                graphics.DrawString("Disarming...", fonts.Fixedsys14, Brushes.Crimson, gameModel.Player.X - 30,
-                    gameModel.Player.Y + 40);
+                graphics.DrawString("Disarming...", fonts.Fixedsys14, Brushes.Crimson, gameModel.Player.X * 40 - 30,
+                    gameModel.Player.Y * 40 + 40);
             
             graphics.DrawString(gameModel.GameTime, fonts.Fixedsys24, Brushes.White, GameSettings.GameWidth / 2f, 2, new StringFormat()
             {
@@ -87,28 +83,28 @@ namespace BlindMan.View.Controls
             });
         }
 
+        private void DrawTile(Graphics graphics, Image image, Point position)
+        {
+            graphics.DrawImage(image, position.X * TileSize, position.Y * TileSize, TileSize, TileSize);
+        }
+        
+        private void DrawTileRectangle(Graphics graphics, Brush brush, Point position)
+        {
+            graphics.FillRectangle(brush, position.X * TileSize, position.Y * TileSize, TileSize, TileSize);
+        }
+
         private bool IsVisibleByPlayer(Point objectPosition)
         {
             var player = gameModel.Player;
-            if (Math.Pow(Math.Abs(player.labyrinthPosition.X - objectPosition.X), 2) +
-                Math.Pow(Math.Abs(player.labyrinthPosition.Y - objectPosition.Y), 2) < player.Vision)
-                return true;
-            return false;
+            return Math.Pow(Math.Abs(player.X - objectPosition.X), 2) +
+                Math.Pow(Math.Abs(player.Y - objectPosition.Y), 2) < player.Vision;
         }
 
         private void StartGameUpdaterTimer(GameModel model)
         {
-            deltaTimeWatch = new Stopwatch();
-            deltaTimeWatch.Start();
             updateTimer = new Timer();
             updateTimer.Interval = 1000 / GameSettings.GameTPS;
-            updateTimer.Tick += (sender, args) =>
-            {
-                var deltaTime = (float) deltaTimeWatch.Elapsed.TotalSeconds;
-                model.Update(deltaTime);
-                deltaTimeWatch.Restart();
-                Invalidate();
-            };
+            updateTimer.Tick += (sender, args) => Invalidate();
             updateTimer.Start();
         }
 
@@ -147,7 +143,6 @@ namespace BlindMan.View.Controls
             fpsTimer.Dispose();
             updateTimer.Stop();
             updateTimer.Dispose();
-            deltaTimeWatch.Stop();
             base.Dispose(disposing);
         }
     }

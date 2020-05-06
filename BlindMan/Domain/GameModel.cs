@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-using BlindMan.Entities;
 
 namespace BlindMan.Domain
 {
@@ -42,7 +41,7 @@ namespace BlindMan.Domain
             stopwatch.Reset();
             stopwatch.Start();
             Labyrinth = new LabyrinthGenerator().CreateLabyrinth(31, 17, 5);
-            Player = new Player(Labyrinth.PlayerPosition.X, Labyrinth.PlayerPosition.Y, 40, 40, this);
+            Player = new Player(Labyrinth.PlayerPosition.X, Labyrinth.PlayerPosition.Y, this);
         }
 
         public void EndGame()
@@ -54,11 +53,6 @@ namespace BlindMan.Domain
             DownKeyDown = () => { };
             SpaceKeyDown = () => { };
             GameState = GameState.GameWon;
-        }
-        
-        public void Update(float deltaTime)
-        {
-            Player.Update(deltaTime);
         }
 
         public void KeyDown(Keys key)

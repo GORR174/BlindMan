@@ -1,39 +1,32 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using BlindMan.Domain;
 
-namespace BlindMan.Entities
+namespace BlindMan.Domain
 {
     public class Player : Entity
     {
-        public Point labyrinthPosition;
-        private LabyrinthModel labyrinth;
-        private GameModel gameModel;
+        private readonly LabyrinthModel labyrinth;
+        private readonly GameModel gameModel;
         public int Vision { get; private set; }
         public bool HasKey { get; private set; }
         public bool HasGlasses { get; private set; }
         public bool IsDisarming { get; private set; }
-        private readonly Timer DisarmTimer = new Timer();
+        private readonly Timer disarmTimer = new Timer();
         
         private readonly Random random = new Random();
         private const int DisarmInterval = 1500;
 
-        public Player(int x, int y, int width, int height, GameModel gameModel) : base(gameModel)
+        public Player(int x, int y, GameModel gameModel) : base(gameModel)
         {
-            X = x * width;
-            Y = y * height;
-            Width = width;
-            Height = height;
+            X = x;
+            Y = y;
             Vision = 8;
             HasKey = false;
             HasGlasses = false;
             IsDisarming = false;
 
             this.gameModel = gameModel;
-
-            labyrinthPosition.X = x;
-            labyrinthPosition.Y = y;
 
             labyrinth = gameModel.Labyrinth;
             
@@ -42,18 +35,18 @@ namespace BlindMan.Entities
             gameModel.UpKeyDown += () => Move(new Point(0, -1));
             gameModel.DownKeyDown += () => Move(new Point(0, 1));
 
-            DisarmTimer.Interval = DisarmInterval;
-            DisarmTimer.Tick += (sender, args) =>
+            disarmTimer.Interval = DisarmInterval;
+            disarmTimer.Tick += (sender, args) =>
             {
                 IsDisarming = false;
                 DisarmNeighbourCells();
-                DisarmTimer.Stop();
+                disarmTimer.Stop();
             };
 
             gameModel.SpaceKeyDown += () =>
             {
                 IsDisarming = true;
-                DisarmTimer.Start();
+                disarmTimer.Start();
             };
         }
 
@@ -65,8 +58,8 @@ namespace BlindMan.Entities
                 {
                     if (Math.Abs(i) + Math.Abs(j) == 1)
                     {
-                        var neighbourX = labyrinthPosition.X + j;
-                        var neighbourY = labyrinthPosition.Y + i;
+                        var neighbourX = X + j;
+                        var neighbourY = Y + i;
                         
                         var neighbourPoint = new Point(neighbourX, neighbourY);
 
@@ -82,46 +75,61 @@ namespace BlindMan.Entities
             if (IsDisarming)
                 return;
             
-            X += vector.X * Width;
-            Y += vector.Y * Height;
+            X += vector.X;
+            Y += vector.Y;
             
-            labyrinthPosition.X = (int) (X / Width);
-            labyrinthPosition.Y = (int) (Y / Height);
+            var playerPoint = new Point(X, Y);
 
-            if (labyrinth.Labyrinth[labyrinthPosition.Y, labyrinthPosition.X] == LabyrinthModel.LabyrinthElements.WALL 
-                || (!HasKey && labyrinth.ExitPosition == labyrinthPosition))
+            if (labyrinth.Labyrinth[Y, X] == LabyrinthModel.LabyrinthElements.Wall 
+                || (!HasKey && labyrinth.ExitPosition == playerPoint))
             {
                 Move(new Point(-vector.X, -vector.Y));
             }
-
-            if (HasKey && labyrinth.ExitPosition == labyrinthPosition)
-                gameModel.EndGame();
-
-            if (!HasKey && labyrinthPosition == labyrinth.KeyPosition)
-                HasKey = true;
             
-            if (!HasGlasses && labyrinthPosition == labyrinth.GlassesPosition)
+            CheckCollisionWithItems();
+        }
+
+        private void CheckCollisionWithItems()
+        {
+            var playerPoint = new Point(X, Y);
+
+            CheckCollisionWithExit(playerPoint);
+            CheckCollisionWithKey(playerPoint);
+            CheckCollisionWithGlasses(playerPoint);
+            CheckCollisionWithPortals(playerPoint);
+        }
+
+        private void CheckCollisionWithExit(Point playerPoint)
+        {
+            if (HasKey && labyrinth.ExitPosition == playerPoint)
+                gameModel.EndGame();
+        }
+        
+        private void CheckCollisionWithKey(Point playerPoint)
+        {
+            if (!HasKey && playerPoint == labyrinth.KeyPosition)
+                HasKey = true;
+        }
+        
+        private void CheckCollisionWithGlasses(Point playerPoint)
+        {
+            if (!HasGlasses && playerPoint == labyrinth.GlassesPosition)
             {
                 HasGlasses = true;
                 Vision += 16;
             }
-            
-            if (labyrinth.PortalPositions.Contains(labyrinthPosition))
-            {
-                labyrinth.PortalPositions.Remove(labyrinthPosition);
-                var rndPosition = labyrinth.TeleportPoints[random.Next(labyrinth.TeleportPoints.Count)];
-                
-                X = rndPosition.X * Width;
-                Y = rndPosition.Y * Height;
-            
-                labyrinthPosition.X = (int) (X / Width);
-                labyrinthPosition.Y = (int) (Y / Height);
-            }
         }
         
-        public override void Update(float deltaTime)
+        private void CheckCollisionWithPortals(Point playerPoint)
         {
-            
+            if (labyrinth.PortalPositions.Contains(playerPoint))
+            {
+                labyrinth.PortalPositions.Remove(playerPoint);
+                var rndPosition = labyrinth.TeleportPoints[random.Next(labyrinth.TeleportPoints.Count)];
+                
+                X = rndPosition.X;
+                Y = rndPosition.Y;
+            }
         }
     }
 }

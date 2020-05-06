@@ -13,6 +13,7 @@ namespace BlindMan.Domain
         private HashSet<Point> possibleGlasses;
         private HashSet<Point> possiblePortals;
         private HashSet<Point> possibleTeleportPoints;
+        private readonly Random random = new Random();
         
         private LabyrinthElements[,] GenerateDefaultLabyrinth(int width, int height)
         {
@@ -22,63 +23,67 @@ namespace BlindMan.Domain
                 for (var column = 0; column < width; column++)
                 {
                     if (row % 2 != 0 && column % 2 != 0 && row < height - 1 && column < width - 1)
-                        labyrinthElements[row, column] = LabyrinthElements.CELL;
+                        labyrinthElements[row, column] = LabyrinthElements.Cell;
                     else
-                        labyrinthElements[row, column] = LabyrinthElements.WALL;
+                        labyrinthElements[row, column] = LabyrinthElements.Wall;
                 }
             }
 
             return labyrinthElements;
         }
-        
-        public LabyrinthModel CreateLabyrinth(int width, int height, int portalsCount)
+
+        private void Init()
         {
             possibleExits = new HashSet<Point>();
             possibleKeys = new HashSet<Point>();
             possibleGlasses = new HashSet<Point>();
             possiblePortals = new HashSet<Point>();
             possibleTeleportPoints = new HashSet<Point>();
+        }
+
+        public LabyrinthModel CreateLabyrinth(int width, int height, int portalsCount)
+        {
+            Init();
             var labyrinthElements = GenerateDefaultLabyrinth(width, height);
 
             var playerPosition = GetRandomPlayerPosition(width, height);
             
             GenerateLabyrinth(width, height, labyrinthElements, playerPosition);
-            var random = new Random();
 
-            var exitPosition = possibleExits.ToList()[random.Next(possibleExits.Count)];
+            var exitPosition = GenerateExit();
+            var keyPosition = GenerateKey(exitPosition, playerPosition);
+            var glassesPosition = GenerateGlasses(exitPosition, playerPosition, keyPosition);
+            var portalPositions = GeneratePortals(portalsCount, exitPosition, playerPosition, keyPosition, glassesPosition);
+            RemoveImpossibleTeleports(exitPosition, keyPosition, glassesPosition, portalPositions);
 
-            if (possibleKeys.Contains(exitPosition))
-                possibleKeys.Remove(exitPosition);
+            return new LabyrinthModel(labyrinthElements, playerPosition)
+            {
+                ExitPosition = exitPosition,
+                KeyPosition = keyPosition,
+                GlassesPosition = glassesPosition,
+                PortalPositions = portalPositions,
+                TeleportPoints = possibleTeleportPoints.ToList()
+            };
+        }
 
-            var keysToRemove = possibleKeys.Where(key => 
-                    Math.Abs(key.X) + Math.Abs(playerPosition.X) < 6
-                    && Math.Abs(key.Y) + Math.Abs(playerPosition.Y) < 6
-                    && Math.Abs(key.X) + Math.Abs(exitPosition.X) < 3
-                    && Math.Abs(key.Y) + Math.Abs(exitPosition.Y) < 3)
-                .ToList();
-            
-            keysToRemove.ForEach(key => possibleKeys.Remove(key));
-            
-            var keyPosition = possibleKeys.ToList()[random.Next(possibleKeys.Count)];
-            
-            if (possibleGlasses.Contains(exitPosition))
-                possibleGlasses.Remove(exitPosition);
-            if (possibleGlasses.Contains(keyPosition))
-                possibleGlasses.Remove(keyPosition);
+        private void RemoveImpossibleTeleports(Point exitPosition, Point keyPosition, Point glassesPosition, List<Point> portalPositions)
+        {
+            if (possibleTeleportPoints.Contains(exitPosition))
+                possibleTeleportPoints.Remove(exitPosition);
+            if (possibleTeleportPoints.Contains(keyPosition))
+                possibleTeleportPoints.Remove(keyPosition);
+            if (possibleTeleportPoints.Contains(glassesPosition))
+                possibleTeleportPoints.Remove(glassesPosition);
 
-            var glassesToRemove = possibleGlasses.Where(glasses => 
-                    Math.Abs(glasses.X) + Math.Abs(playerPosition.X) < 6
-                    && Math.Abs(glasses.Y) + Math.Abs(playerPosition.Y) < 6
-                    && Math.Abs(glasses.X) + Math.Abs(exitPosition.X) < 3
-                    && Math.Abs(glasses.Y) + Math.Abs(exitPosition.Y) < 3
-                    && Math.Abs(glasses.X) + Math.Abs(keyPosition.X) < 4
-                    && Math.Abs(glasses.Y) + Math.Abs(keyPosition.Y) < 4)
-                .ToList();
-            
-            glassesToRemove.ForEach(glasses => possibleGlasses.Remove(glasses));
-            
-            var glassesPosition = possibleGlasses.ToList()[random.Next(possibleGlasses.Count)];
-            
+            foreach (var portalPosition in portalPositions)
+            {
+                if (possibleTeleportPoints.Contains(portalPosition))
+                    possibleTeleportPoints.Remove(portalPosition);
+            }
+        }
+
+        private List<Point> GeneratePortals(int portalsCount, Point exitPosition, Point playerPosition, Point keyPosition, Point glassesPosition)
+        {
             if (possiblePortals.Contains(exitPosition))
                 possiblePortals.Remove(exitPosition);
             if (possiblePortals.Contains(keyPosition))
@@ -106,28 +111,49 @@ namespace BlindMan.Domain
                 portalPositions.Add(portalPosition);
                 possiblePortals.Remove(portalPosition);
             }
-            
-            if (possibleTeleportPoints.Contains(exitPosition))
-                possibleTeleportPoints.Remove(exitPosition);
-            if (possibleTeleportPoints.Contains(keyPosition))
-                possibleTeleportPoints.Remove(keyPosition);
-            if (possibleTeleportPoints.Contains(glassesPosition))
-                possibleTeleportPoints.Remove(glassesPosition);
-            
-            foreach (var portalPosition in portalPositions)
-            {
-                if (possibleTeleportPoints.Contains(portalPosition))
-                    possibleTeleportPoints.Remove(portalPosition);
-            }
 
-            return new LabyrinthModel(labyrinthElements, playerPosition)
-            {
-                ExitPosition = exitPosition,
-                KeyPosition = keyPosition,
-                GlassesPosition = glassesPosition,
-                PortalPositions = portalPositions,
-                TeleportPoints = possibleTeleportPoints.ToList()
-            };
+            return portalPositions;
+        }
+
+        private Point GenerateGlasses(Point exitPosition, Point playerPosition, Point keyPosition)
+        {
+            if (possibleGlasses.Contains(exitPosition))
+                            possibleGlasses.Remove(exitPosition);
+            if (possibleGlasses.Contains(keyPosition))
+                possibleGlasses.Remove(keyPosition);
+
+            var glassesToRemove = possibleGlasses.Where(glasses => 
+                    Math.Abs(glasses.X) + Math.Abs(playerPosition.X) < 6
+                    && Math.Abs(glasses.Y) + Math.Abs(playerPosition.Y) < 6
+                    && Math.Abs(glasses.X) + Math.Abs(exitPosition.X) < 3
+                    && Math.Abs(glasses.Y) + Math.Abs(exitPosition.Y) < 3
+                    && Math.Abs(glasses.X) + Math.Abs(keyPosition.X) < 4
+                    && Math.Abs(glasses.Y) + Math.Abs(keyPosition.Y) < 4)
+                .ToList();
+            
+            glassesToRemove.ForEach(glasses => possibleGlasses.Remove(glasses));
+            
+            return possibleGlasses.ToList()[random.Next(possibleGlasses.Count)];
+        }
+
+        private Point GenerateExit() =>
+            possibleExits.ToList()[random.Next(possibleExits.Count)];
+
+        private Point GenerateKey(Point exitPosition, Point playerPosition)
+        {
+            if (possibleKeys.Contains(exitPosition))
+                possibleKeys.Remove(exitPosition);
+
+            var keysToRemove = possibleKeys.Where(key => 
+                    Math.Abs(key.X) + Math.Abs(playerPosition.X) < 6
+                    && Math.Abs(key.Y) + Math.Abs(playerPosition.Y) < 6
+                    && Math.Abs(key.X) + Math.Abs(exitPosition.X) < 3
+                    && Math.Abs(key.Y) + Math.Abs(exitPosition.Y) < 3)
+                .ToList();
+            
+            keysToRemove.ForEach(key => possibleKeys.Remove(key));
+            
+            return possibleKeys.ToList()[random.Next(possibleKeys.Count)];
         }
 
         private Point GetRandomPlayerPosition(int width, int height)
@@ -150,7 +176,6 @@ namespace BlindMan.Domain
             var visited = new HashSet<Point>();
             visited.Add(toOpen.Value);
             var stack = new Stack<Point>();
-            var random = new Random();
 
             do
             {
@@ -163,7 +188,7 @@ namespace BlindMan.Domain
 
                     var wallToRemoveX = (toOpen.Value.X + nextCell.X) / 2;
                     var wallToRemoveY = (toOpen.Value.Y + nextCell.Y) / 2;
-                    labyrinthElements[wallToRemoveY, wallToRemoveX] = LabyrinthElements.CELL;
+                    labyrinthElements[wallToRemoveY, wallToRemoveX] = LabyrinthElements.Cell;
 
                     toOpen = nextCell;
                     visited.Add(toOpen.Value);

@@ -22,14 +22,12 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="BlindMan.csproj" t="IncludeRecursive" />
         <e p="Domain" t="Include">
+          <e p="EntityModel.cs" t="Include" />
           <e p="GameModel.cs" t="Include" />
           <e p="GameState.cs" t="Include" />
           <e p="LabyrinthGenerator.cs" t="Include" />
           <e p="labyrinthModel.cs" t="Include" />
-        </e>
-        <e p="Entities" t="Include">
-          <e p="Entity.cs" t="Include" />
-          <e p="Player.cs" t="Include" />
+          <e p="PlayerModel.cs" t="Include" />
         </e>
         <e p="GameSettings.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
@@ -46,7 +44,6 @@
           </e>
           <e p="Fonts.cs" t="Include" />
           <e p="GameForm.cs" t="Include" />
-          <e p="GraphicsExt.cs" t="Include" />
           <e p="Images.cs" t="Include" />
         </e>
       </e>
