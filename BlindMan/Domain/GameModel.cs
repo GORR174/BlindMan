@@ -26,6 +26,7 @@ namespace BlindMan.Domain
         public event Action RightKeyDown;
         public event Action UpKeyDown;
         public event Action DownKeyDown;
+        public event Action SpaceKeyDown;
 
         public LabyrinthModel Labyrinth;
 
@@ -40,7 +41,7 @@ namespace BlindMan.Domain
         {
             stopwatch.Reset();
             stopwatch.Start();
-            Labyrinth = new LabyrinthGenerator().CreateLabyrinth(31, 17);
+            Labyrinth = new LabyrinthGenerator().CreateLabyrinth(31, 17, 5);
             Player = new Player(Labyrinth.PlayerPosition.X, Labyrinth.PlayerPosition.Y, 40, 40, this);
         }
 
@@ -51,6 +52,7 @@ namespace BlindMan.Domain
             RightKeyDown = () => { };
             UpKeyDown = () => { };
             DownKeyDown = () => { };
+            SpaceKeyDown = () => { };
             GameState = GameState.GameWon;
         }
         
@@ -79,10 +81,11 @@ namespace BlindMan.Domain
                 case Keys.Down:
                     DownKeyDown?.Invoke();
                     break;
+                case Keys.R:
+                    StartGame();
+                    break;
                 case Keys.Space:
-                    GameState = GameState.GameWon;
-                    Labyrinth = new LabyrinthGenerator().CreateLabyrinth(31, 17);
-                    Player = new Player(Labyrinth.PlayerPosition.X, Labyrinth.PlayerPosition.Y, 40, 40, this);
+                    SpaceKeyDown?.Invoke();
                     break;
             }
         }

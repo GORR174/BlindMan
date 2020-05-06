@@ -11,6 +11,8 @@ namespace BlindMan.Domain
         private HashSet<Point> possibleExits;
         private HashSet<Point> possibleKeys;
         private HashSet<Point> possibleGlasses;
+        private HashSet<Point> possiblePortals;
+        private HashSet<Point> possibleTeleportPoints;
         
         private LabyrinthElements[,] GenerateDefaultLabyrinth(int width, int height)
         {
@@ -29,11 +31,13 @@ namespace BlindMan.Domain
             return labyrinthElements;
         }
         
-        public LabyrinthModel CreateLabyrinth(int width, int height)
+        public LabyrinthModel CreateLabyrinth(int width, int height, int portalsCount)
         {
             possibleExits = new HashSet<Point>();
             possibleKeys = new HashSet<Point>();
             possibleGlasses = new HashSet<Point>();
+            possiblePortals = new HashSet<Point>();
+            possibleTeleportPoints = new HashSet<Point>();
             var labyrinthElements = GenerateDefaultLabyrinth(width, height);
 
             var playerPosition = GetRandomPlayerPosition(width, height);
@@ -74,12 +78,55 @@ namespace BlindMan.Domain
             glassesToRemove.ForEach(glasses => possibleGlasses.Remove(glasses));
             
             var glassesPosition = possibleGlasses.ToList()[random.Next(possibleGlasses.Count)];
+            
+            if (possiblePortals.Contains(exitPosition))
+                possiblePortals.Remove(exitPosition);
+            if (possiblePortals.Contains(keyPosition))
+                possiblePortals.Remove(keyPosition);
+            if (possiblePortals.Contains(glassesPosition))
+                possiblePortals.Remove(glassesPosition);
+
+            var portalsToRemove = possiblePortals.Where(portal => 
+                    Math.Abs(portal.X) + Math.Abs(playerPosition.X) < 6
+                    && Math.Abs(portal.Y) + Math.Abs(playerPosition.Y) < 6
+                    && Math.Abs(portal.X) + Math.Abs(exitPosition.X) < 3
+                    && Math.Abs(portal.Y) + Math.Abs(exitPosition.Y) < 3
+                    && Math.Abs(portal.X) + Math.Abs(keyPosition.X) < 4
+                    && Math.Abs(portal.Y) + Math.Abs(keyPosition.Y) < 4
+                    && Math.Abs(portal.X) + Math.Abs(glassesPosition.X) < 4
+                    && Math.Abs(portal.Y) + Math.Abs(glassesPosition.Y) < 4)
+                .ToList();
+            
+            portalsToRemove.ForEach(portal => possiblePortals.Remove(portal));
+
+            var portalPositions = new List<Point>();
+            for (var i = 0; i < portalsCount; i++)
+            {
+                var portalPosition = possiblePortals.ToList()[random.Next(possiblePortals.Count)];
+                portalPositions.Add(portalPosition);
+                possiblePortals.Remove(portalPosition);
+            }
+            
+            if (possibleTeleportPoints.Contains(exitPosition))
+                possibleTeleportPoints.Remove(exitPosition);
+            if (possibleTeleportPoints.Contains(keyPosition))
+                possibleTeleportPoints.Remove(keyPosition);
+            if (possibleTeleportPoints.Contains(glassesPosition))
+                possibleTeleportPoints.Remove(glassesPosition);
+            
+            foreach (var portalPosition in portalPositions)
+            {
+                if (possibleTeleportPoints.Contains(portalPosition))
+                    possibleTeleportPoints.Remove(portalPosition);
+            }
 
             return new LabyrinthModel(labyrinthElements, playerPosition)
             {
                 ExitPosition = exitPosition,
                 KeyPosition = keyPosition,
-                GlassesPosition = glassesPosition
+                GlassesPosition = glassesPosition,
+                PortalPositions = portalPositions,
+                TeleportPoints = possibleTeleportPoints.ToList()
             };
         }
 
@@ -122,6 +169,8 @@ namespace BlindMan.Domain
                     visited.Add(toOpen.Value);
                     possibleKeys.Add(toOpen.Value);
                     possibleGlasses.Add(toOpen.Value);
+                    possiblePortals.Add(toOpen.Value);
+                    possibleTeleportPoints.Add(toOpen.Value);
                     if (GetNeighbours(toOpen.Value, width, height, visited).Count == 0)
                         possibleExits.Add(toOpen.Value);
                 }

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace BlindMan.Domain
 {
@@ -13,6 +14,8 @@ namespace BlindMan.Domain
         public Point ExitPosition { get; set; }
         public Point KeyPosition { get; set; }
         public Point GlassesPosition { get; set; }
+        public List<Point> PortalPositions { get; set; }
+        public List<Point> TeleportPoints { get; set; }
 
         public LabyrinthModel(LabyrinthElements[,] labyrinth, Point playerPosition)
         {

@@ -7,12 +7,14 @@ namespace BlindMan.View
     public class Fonts
     {
         public Font Fixedsys24;
+        public Font Fixedsys14;
         
         private readonly PrivateFontCollection fontCollection = new PrivateFontCollection();
 
         public void Load()
         {
             Fixedsys24 = LoadFontFromFile("fixedsys.ttf", 24);
+            Fixedsys14 = LoadFontFromFile("fixedsys.ttf", 14);
         }
 
         private Font LoadFontFromFile(string fileName, int fontSize)

@@ -10,6 +10,7 @@ namespace BlindMan.View
         public Image OpenedDoor { get; private set; }
         public Image Key { get; private set; }
         public Image Glasses { get; private set; }
+        public Image Portal { get; private set; }
 
         private Image LoadImageFromAssets(string fileName) =>
             Image.FromFile("Assets/Textures/" + fileName);
@@ -18,10 +19,11 @@ namespace BlindMan.View
         {
             Player = LoadImageFromAssets("player.png");
             Wall = LoadImageFromAssets("wall.png");
-            ClosedDoor = LoadImageFromAssets("closed_door.png");
-            OpenedDoor = LoadImageFromAssets("opened_door.png");
+            ClosedDoor = LoadImageFromAssets("door_closed.png");
+            OpenedDoor = LoadImageFromAssets("door_open.png");
             Key = LoadImageFromAssets("key.jpg");
             Glasses = LoadImageFromAssets("glasses.png");
+            Portal = LoadImageFromAssets("portal.png");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using BlindMan.Domain;
+using BlindMan.Entities;
 
 namespace BlindMan.View.Controls
 {
@@ -54,6 +55,12 @@ namespace BlindMan.View.Controls
                     }
                 }
             }
+            
+            lab.PortalPositions.ForEach(portalPosition =>
+            {
+                if (IsVisibleByPlayer(portalPosition))
+                    graphics.DrawImage(images.Portal, portalPosition.X * 40 + 5, portalPosition.Y * 40 + 5, 30, 30);
+            });
 
             if (IsVisibleByPlayer(lab.ExitPosition))
             {
@@ -69,7 +76,10 @@ namespace BlindMan.View.Controls
                 graphics.DrawImage(images.Glasses, lab.GlassesPosition.X * 40, lab.GlassesPosition.Y * 40, 40, 40);
             
             graphics.DrawEntity(images.Player, gameModel.Player);
-            
+
+            if (gameModel.Player.IsDisarming)
+                graphics.DrawString("Disarming...", fonts.Fixedsys14, Brushes.Crimson, gameModel.Player.X - 30,
+                    gameModel.Player.Y + 40);
             
             graphics.DrawString(gameModel.GameTime, fonts.Fixedsys24, Brushes.White, GameSettings.GameWidth / 2f, 2, new StringFormat()
             {

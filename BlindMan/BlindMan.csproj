@@ -59,13 +59,16 @@
         <Compile Include="View\Images.cs" />
     </ItemGroup>
     <ItemGroup>
-      <EmbeddedResource Include="Assets\Textures\opened_door.png">
+      <EmbeddedResource Include="Assets\Textures\portal.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Assets\Textures\door_open.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>
       <EmbeddedResource Include="Assets\Textures\key.jpg">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>
-      <EmbeddedResource Include="Assets\Textures\closed_door.png">
+      <EmbeddedResource Include="Assets\Textures\door_closed.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>
       <EmbeddedResource Include="Assets\Textures\wall.png">
