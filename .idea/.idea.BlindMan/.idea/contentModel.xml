@@ -13,10 +13,9 @@
             <e p="door_closed.png" t="Include" />
             <e p="door_open.png" t="Include" />
             <e p="glasses.png" t="Include" />
-            <e p="key.jpg" t="Include" />
+            <e p="key.png" t="Include" />
             <e p="player.png" t="Include" />
             <e p="portal.png" t="Include" />
-            <e p="wall.png" t="Include" />
           </e>
         </e>
         <e p="bin" t="ExcludeRecursive" />
