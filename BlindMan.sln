@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlindMan", "BlindMan\BlindMan.csproj", "{1CAD31B9-526C-4C42-9EE1-B3BB45603E8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlindManTests", "BlindManTests\BlindManTests.csproj", "{20FEF9DD-AD6D-4F87-8814-F0C3ACCEBF96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{1CAD31B9-526C-4C42-9EE1-B3BB45603E8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CAD31B9-526C-4C42-9EE1-B3BB45603E8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CAD31B9-526C-4C42-9EE1-B3BB45603E8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20FEF9DD-AD6D-4F87-8814-F0C3ACCEBF96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20FEF9DD-AD6D-4F87-8814-F0C3ACCEBF96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20FEF9DD-AD6D-4F87-8814-F0C3ACCEBF96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20FEF9DD-AD6D-4F87-8814-F0C3ACCEBF96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
