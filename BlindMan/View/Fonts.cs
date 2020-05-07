@@ -6,12 +6,12 @@ namespace BlindMan.View
 {
     public class Fonts
     {
-        public Font Fixedsys24;
-        public Font Fixedsys14;
+        public Font Fixedsys24 { get; }
+        public Font Fixedsys14 { get; }
         
         private readonly PrivateFontCollection fontCollection = new PrivateFontCollection();
 
-        public void Load()
+        public Fonts()
         {
             Fixedsys24 = LoadFontFromFile("fixedsys.ttf", 24);
             Fixedsys14 = LoadFontFromFile("fixedsys.ttf", 14);

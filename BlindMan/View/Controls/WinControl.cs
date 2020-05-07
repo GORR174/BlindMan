@@ -9,7 +9,6 @@ namespace BlindMan.View.Controls
         private Fonts fonts = new Fonts();
         public WinControl(GameModel gameModel) : base(gameModel)
         {
-            fonts.Load();
             var retryButton = new Button();
             retryButton.Text = "Retry";
             retryButton.Click += (sender, args) => gameModel.GameState = GameState.Game;

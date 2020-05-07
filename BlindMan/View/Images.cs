@@ -4,17 +4,17 @@ namespace BlindMan.View
 {
     public class Images
     {
-        public Image Player { get; private set; }
-        public Image DoorClosed { get; private set; }
-        public Image DoorOpen { get; private set; }
-        public Image Key { get; private set; }
-        public Image Glasses { get; private set; }
-        public Image Portal { get; private set; }
+        public Image Player { get; }
+        public Image DoorClosed { get; }
+        public Image DoorOpen { get; }
+        public Image Key { get; }
+        public Image Glasses { get; }
+        public Image Portal { get; }
 
         private Image LoadImageFromAssets(string fileName) =>
             Image.FromFile("Assets/Textures/" + fileName);
-        
-        public void Load()
+
+        public Images()
         {
             Player = LoadImageFromAssets("player.png");
             DoorClosed = LoadImageFromAssets("door_closed.png");

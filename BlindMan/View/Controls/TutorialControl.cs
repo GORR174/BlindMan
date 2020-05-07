@@ -8,10 +8,8 @@ namespace BlindMan.View.Controls
     {
         public TutorialControl(GameModel gameModel) : base(gameModel)
         {
-            var tutorialImage = new PictureBox();
-            tutorialImage.Image = Image.FromFile("Assets/Textures/tutorial.png");
-            tutorialImage.Dock = DockStyle.Fill;
-            tutorialImage.SizeMode = PictureBoxSizeMode.StretchImage;
+            BackgroundImage = Image.FromFile("Assets/Textures/tutorial.png");
+            BackgroundImageLayout = ImageLayout.Stretch;
 
             var backButton = new PictureBox();
             backButton.Image = Image.FromFile("Assets/Textures/back_button.png");
@@ -20,9 +18,8 @@ namespace BlindMan.View.Controls
             backButton.Height = 70;
             backButton.Left = 64;
             backButton.Click += (sender, args) => gameModel.GameState = GameState.Menu;
-            
             Controls.Add(backButton);
-            Controls.Add(tutorialImage);
+            
             SizeChanged += (sender, args) => { backButton.Top = ClientSize.Height - 100; };
         }
     }

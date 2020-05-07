@@ -17,9 +17,6 @@ namespace BlindMan.View.Controls
         
         public GameControl(GameModel gameModel) : base(gameModel)
         {
-            images.Load();
-            fonts.Load();
-
             gameModel.StartGame();
             StartGameUpdaterTimer(gameModel);
             StartFpsCounterTimer();
