@@ -10,12 +10,14 @@
             <e p="fixedsys.ttf" t="Include" />
           </e>
           <e p="Textures" t="Include">
+            <e p="back_button.png" t="Include" />
             <e p="door_closed.png" t="Include" />
             <e p="door_open.png" t="Include" />
             <e p="glasses.png" t="Include" />
             <e p="key.png" t="Include" />
             <e p="player.png" t="Include" />
             <e p="portal.png" t="Include" />
+            <e p="tutorial.png" t="Include" />
           </e>
         </e>
         <e p="bin" t="ExcludeRecursive" />
@@ -39,6 +41,7 @@
             <e p="BaseControl.cs" t="Include" />
             <e p="GameControl.cs" t="Include" />
             <e p="MenuControl.cs" t="Include" />
+            <e p="TutorialControl.cs" t="Include" />
             <e p="WinControl.cs" t="Include" />
           </e>
           <e p="Fonts.cs" t="Include" />

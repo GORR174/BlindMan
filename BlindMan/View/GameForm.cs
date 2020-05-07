@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using BlindMan.Domain;
 using BlindMan.View.Controls;
@@ -31,6 +32,9 @@ namespace BlindMan.View
                     break;
                 case GameState.GameWon:
                     SetControl(new WinControl(gameModel));
+                    break;
+                case GameState.Tutorial:
+                    SetControl(new TutorialControl(gameModel));
                     break;
             }
         }

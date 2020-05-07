@@ -4,6 +4,7 @@
     {
         Menu,
         Game,
-        GameWon
+        GameWon,
+        Tutorial
     }
 }
