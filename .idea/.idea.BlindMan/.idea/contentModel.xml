@@ -39,6 +39,7 @@
         <e p="View" t="Include">
           <e p="Controls" t="Include">
             <e p="BaseControl.cs" t="Include" />
+            <e p="FlatButton.cs" t="Include" />
             <e p="GameControl.cs" t="Include" />
             <e p="MenuControl.cs" t="Include" />
             <e p="TutorialControl.cs" t="Include" />
