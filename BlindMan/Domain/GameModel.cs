@@ -38,9 +38,14 @@ namespace BlindMan.Domain
 
         public void StartGame()
         {
+            StartGame(new LabyrinthGenerator().CreateLabyrinth(31, 17, 5));
+        }
+        
+        public void StartGame(LabyrinthModel labyrinth)
+        {
             stopwatch.Reset();
             stopwatch.Start();
-            Labyrinth = new LabyrinthGenerator().CreateLabyrinth(31, 17, 5);
+            Labyrinth = labyrinth;
             Player = new Player(Labyrinth.PlayerPosition.X, Labyrinth.PlayerPosition.Y, this);
         }
 

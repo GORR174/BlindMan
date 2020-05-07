@@ -46,6 +46,7 @@
     <ItemGroup>
         <Compile Include="GameModelTests.cs" />
         <Compile Include="LabyrinthGeneratorTests.cs" />
+        <Compile Include="PlayerModelTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
